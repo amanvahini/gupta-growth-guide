@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ConsultingRouteImport } from './routes/consulting'
+import { Route as CorporateTrainingRouteImport } from './routes/corporate-training'
 import { Route as SpeakingRouteImport } from './routes/speaking'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +26,21 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsultingRoute = ConsultingRouteImport.update({
+  id: '/consulting',
+  path: '/consulting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorporateTrainingRoute = CorporateTrainingRouteImport.update({
+  id: '/corporate-training',
+  path: '/corporate-training',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SpeakingRoute = SpeakingRouteImport.update({
   id: '/speaking',
   path: '/speaking',
@@ -32,30 +50,61 @@ const SpeakingRoute = SpeakingRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/consulting': typeof ConsultingRoute
+  '/corporate-training': typeof CorporateTrainingRoute
   '/speaking': typeof SpeakingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/consulting': typeof ConsultingRoute
+  '/corporate-training': typeof CorporateTrainingRoute
   '/speaking': typeof SpeakingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/consulting': typeof ConsultingRoute
+  '/corporate-training': typeof CorporateTrainingRoute
   '/speaking': typeof SpeakingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/speaking'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/consulting'
+    | '/corporate-training'
+    | '/speaking'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/speaking'
-  id: '__root__' | '/' | '/about' | '/speaking'
+  to:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/consulting'
+    | '/corporate-training'
+    | '/speaking'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/consulting'
+    | '/corporate-training'
+    | '/speaking'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRoute
+  ConsultingRoute: typeof ConsultingRoute
+  CorporateTrainingRoute: typeof CorporateTrainingRoute
   SpeakingRoute: typeof SpeakingRoute
 }
 
@@ -75,6 +124,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/consulting': {
+      id: '/consulting'
+      path: '/consulting'
+      fullPath: '/consulting'
+      preLoaderRoute: typeof ConsultingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/corporate-training': {
+      id: '/corporate-training'
+      path: '/corporate-training'
+      fullPath: '/corporate-training'
+      preLoaderRoute: typeof CorporateTrainingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/speaking': {
       id: '/speaking'
       path: '/speaking'
@@ -88,6 +158,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BlogRoute: BlogRoute,
+  ConsultingRoute: ConsultingRoute,
+  CorporateTrainingRoute: CorporateTrainingRoute,
   SpeakingRoute: SpeakingRoute,
 }
 export const routeTree = rootRouteImport
