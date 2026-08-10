@@ -13,7 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ConsultingRouteImport } from './routes/consulting'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CorporateTrainingRouteImport } from './routes/corporate-training'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SpeakingRouteImport } from './routes/speaking'
 
 const IndexRoute = IndexRouteImport.update({
@@ -36,9 +38,19 @@ const ConsultingRoute = ConsultingRouteImport.update({
   path: '/consulting',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CorporateTrainingRoute = CorporateTrainingRouteImport.update({
   id: '/corporate-training',
   path: '/corporate-training',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SpeakingRoute = SpeakingRouteImport.update({
@@ -52,7 +64,9 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/consulting': typeof ConsultingRoute
+  '/contact': typeof ContactRoute
   '/corporate-training': typeof CorporateTrainingRoute
+  '/resources': typeof ResourcesRoute
   '/speaking': typeof SpeakingRoute
 }
 export interface FileRoutesByTo {
@@ -60,7 +74,9 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/consulting': typeof ConsultingRoute
+  '/contact': typeof ContactRoute
   '/corporate-training': typeof CorporateTrainingRoute
+  '/resources': typeof ResourcesRoute
   '/speaking': typeof SpeakingRoute
 }
 export interface FileRoutesById {
@@ -69,7 +85,9 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/consulting': typeof ConsultingRoute
+  '/contact': typeof ContactRoute
   '/corporate-training': typeof CorporateTrainingRoute
+  '/resources': typeof ResourcesRoute
   '/speaking': typeof SpeakingRoute
 }
 export interface FileRouteTypes {
@@ -79,7 +97,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/consulting'
+    | '/contact'
     | '/corporate-training'
+    | '/resources'
     | '/speaking'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -87,7 +107,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/consulting'
+    | '/contact'
     | '/corporate-training'
+    | '/resources'
     | '/speaking'
   id:
     | '__root__'
@@ -95,7 +117,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/consulting'
+    | '/contact'
     | '/corporate-training'
+    | '/resources'
     | '/speaking'
   fileRoutesById: FileRoutesById
 }
@@ -104,7 +128,9 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
   ConsultingRoute: typeof ConsultingRoute
+  ContactRoute: typeof ContactRoute
   CorporateTrainingRoute: typeof CorporateTrainingRoute
+  ResourcesRoute: typeof ResourcesRoute
   SpeakingRoute: typeof SpeakingRoute
 }
 
@@ -138,11 +164,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsultingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/corporate-training': {
       id: '/corporate-training'
       path: '/corporate-training'
       fullPath: '/corporate-training'
       preLoaderRoute: typeof CorporateTrainingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/speaking': {
@@ -160,7 +200,9 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BlogRoute: BlogRoute,
   ConsultingRoute: ConsultingRoute,
+  ContactRoute: ContactRoute,
   CorporateTrainingRoute: CorporateTrainingRoute,
+  ResourcesRoute: ResourcesRoute,
   SpeakingRoute: SpeakingRoute,
 }
 export const routeTree = rootRouteImport
