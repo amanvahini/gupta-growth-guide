@@ -44,7 +44,7 @@ export const Route = createFileRoute("/speaking")({
       },
     ],
   }),
-  component: Speaking;
+  component: Speaking,
 });
 
 function Speaking() {
