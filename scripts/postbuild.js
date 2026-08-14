@@ -35,10 +35,35 @@ const htmlContent = `<!DOCTYPE html>
   </body>
 </html>`;
 
-// Write index.html and 404.html (for GitHub Pages SPA routing)
+// Write index.html and 404.html at root
 fs.writeFileSync(path.join(outputPublic, "index.html"), htmlContent, "utf8");
 fs.writeFileSync(path.join(outputPublic, "404.html"), htmlContent, "utf8");
-console.log("Successfully generated .output/public/index.html and .output/public/404.html!");
+
+// Generate subfolder index.html for direct URL static routing on GitHub Pages
+const routes = [
+  "about",
+  "speaking",
+  "consulting",
+  "corporate-training",
+  "blog",
+  "blog/how-to-use-antigravity",
+  "blog/marketing-is-psychology",
+  "blog/ai-adoption-without-chaos",
+  "blog/growth-constraint",
+  "blog/leaders-who-build-leaders",
+  "blog/seo-in-the-answer-era",
+  "blog/price-is-a-message",
+  "resources",
+  "contact",
+];
+
+for (const route of routes) {
+  const routeDir = path.join(outputPublic, route);
+  fs.mkdirSync(routeDir, { recursive: true });
+  fs.writeFileSync(path.join(routeDir, "index.html"), htmlContent, "utf8");
+}
+
+console.log(`Successfully generated root index.html, 404.html, and ${routes.length} static route index.html files!`);
 
 // Ensure CNAME exists in .output/public
 const cnameSrc = path.resolve(process.cwd(), "public/CNAME");
