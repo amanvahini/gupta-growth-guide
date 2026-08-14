@@ -1,0 +1,1 @@
+var e=`/assets/workshop-1-BzrT-EOe.jpg`;export{e as t};

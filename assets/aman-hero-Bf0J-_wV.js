@@ -1,0 +1,1 @@
+var e=`/assets/aman-hero-CzOsGBzo.jpg`;export{e as t};
