@@ -1,15 +1,15 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const outputPublic = path.resolve(process.cwd(), ".output/public");
-const assetsDir = path.join(outputPublic, "assets");
+const targetDir = path.resolve(process.cwd(), "dist/client");
+const assetsDir = path.join(targetDir, "assets");
 
-if (!fs.existsSync(outputPublic)) {
-  console.error(".output/public directory does not exist!");
+if (!fs.existsSync(targetDir)) {
+  console.error("dist/client directory does not exist! Run vite build first.");
   process.exit(1);
 }
 
-// Find CSS and JS bundle files
+// Find CSS and JS bundle files in dist/client/assets
 const files = fs.existsSync(assetsDir) ? fs.readdirSync(assetsDir) : [];
 const cssFile = files.find((f) => f.startsWith("styles-") && f.endsWith(".css")) || files.find((f) => f.endsWith(".css"));
 const indexJsFile = files.find((f) => f.startsWith("index-") && f.endsWith(".js")) || files.find((f) => f.endsWith(".js"));
@@ -35,9 +35,9 @@ const htmlContent = `<!DOCTYPE html>
   </body>
 </html>`;
 
-// Write index.html and 404.html at root
-fs.writeFileSync(path.join(outputPublic, "index.html"), htmlContent, "utf8");
-fs.writeFileSync(path.join(outputPublic, "404.html"), htmlContent, "utf8");
+// Write index.html and 404.html at root of targetDir
+fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent, "utf8");
+fs.writeFileSync(path.join(targetDir, "404.html"), htmlContent, "utf8");
 
 // Generate subfolder index.html for direct URL static routing on GitHub Pages
 const routes = [
@@ -58,17 +58,17 @@ const routes = [
 ];
 
 for (const route of routes) {
-  const routeDir = path.join(outputPublic, route);
+  const routeDir = path.join(targetDir, route);
   fs.mkdirSync(routeDir, { recursive: true });
   fs.writeFileSync(path.join(routeDir, "index.html"), htmlContent, "utf8");
 }
 
-console.log(`Successfully generated root index.html, 404.html, and ${routes.length} static route index.html files!`);
+console.log(`Successfully generated index.html, 404.html, and ${routes.length} static route files in dist/client!`);
 
-// Ensure CNAME exists in .output/public
+// Ensure CNAME exists in targetDir
 const cnameSrc = path.resolve(process.cwd(), "public/CNAME");
-const cnameDest = path.join(outputPublic, "CNAME");
+const cnameDest = path.join(targetDir, "CNAME");
 if (fs.existsSync(cnameSrc)) {
   fs.copyFileSync(cnameSrc, cnameDest);
-  console.log("Copied CNAME to .output/public/CNAME");
+  console.log("Copied CNAME to dist/client/CNAME");
 }
