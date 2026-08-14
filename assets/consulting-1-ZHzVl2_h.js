@@ -1,0 +1,1 @@
+var e=`/assets/consulting-1-DNLllm5_.jpg`;export{e as t};
