@@ -12,6 +12,23 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  nitro: {
+    prerender: {
+      routes: [
+        "/",
+        "/about",
+        "/speaking",
+        "/consulting",
+        "/corporate-training",
+        "/blog",
+        "/blog/how-to-use-antigravity",
+        "/resources",
+        "/contact",
+      ],
+      crawlLinks: true,
+    },
+  },
 });
+
 
 
