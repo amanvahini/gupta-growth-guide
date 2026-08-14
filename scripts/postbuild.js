@@ -1,45 +1,25 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const targetDir = path.resolve(process.cwd(), "dist/client");
-const assetsDir = path.join(targetDir, "assets");
+const targetDir = path.resolve(process.cwd(), "dist");
 
 if (!fs.existsSync(targetDir)) {
-  console.error("dist/client directory does not exist! Run vite build first.");
+  console.error("dist directory does not exist! Run vite build first.");
   process.exit(1);
 }
 
-// Find CSS and JS bundle files in dist/client/assets
-const files = fs.existsSync(assetsDir) ? fs.readdirSync(assetsDir) : [];
-const cssFile = files.find((f) => f.startsWith("styles-") && f.endsWith(".css")) || files.find((f) => f.endsWith(".css"));
-const indexJsFile = files.find((f) => f.startsWith("index-") && f.endsWith(".js")) || files.find((f) => f.endsWith(".js"));
+const indexPath = path.join(targetDir, "index.html");
+if (!fs.existsSync(indexPath)) {
+  console.error("dist/index.html does not exist!");
+  process.exit(1);
+}
 
-console.log("Postbuild detected assets:", { cssFile, indexJsFile });
+const htmlContent = fs.readFileSync(indexPath, "utf8");
 
-const htmlContent = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Aman Gupta — Keynote Speaker & Business Growth Consultant</title>
-    <meta name="description" content="Aman Gupta helps founders and organizations build stronger brands, better teams and sustainable growth through marketing, consumer psychology, leadership and AI." />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" />
-    ${cssFile ? `<link rel="stylesheet" href="/assets/${cssFile}" />` : ""}
-  </head>
-  <body>
-    <div id="root"></div>
-    ${indexJsFile ? `<script type="module" src="/assets/${indexJsFile}"></script>` : ""}
-  </body>
-</html>`;
-
-// Write index.html and 404.html at root of targetDir
-fs.writeFileSync(path.join(targetDir, "index.html"), htmlContent, "utf8");
+// Write 404.html fallback for SPA routing
 fs.writeFileSync(path.join(targetDir, "404.html"), htmlContent, "utf8");
 
-// Generate subfolder index.html for direct URL static routing on GitHub Pages
+// Generate static route folders with index.html for direct URL static routing on GitHub Pages
 const routes = [
   "about",
   "speaking",
@@ -63,12 +43,16 @@ for (const route of routes) {
   fs.writeFileSync(path.join(routeDir, "index.html"), htmlContent, "utf8");
 }
 
-console.log(`Successfully generated index.html, 404.html, and ${routes.length} static route files in dist/client!`);
+console.log(`Successfully generated 404.html and ${routes.length} static route files in dist/!`);
 
-// Ensure CNAME exists in targetDir
+// Copy CNAME file to dist/CNAME
 const cnameSrc = path.resolve(process.cwd(), "public/CNAME");
 const cnameDest = path.join(targetDir, "CNAME");
 if (fs.existsSync(cnameSrc)) {
   fs.copyFileSync(cnameSrc, cnameDest);
-  console.log("Copied CNAME to dist/client/CNAME");
+  console.log("Copied CNAME to dist/CNAME");
 }
+
+// Create .nojekyll in dist
+fs.writeFileSync(path.join(targetDir, ".nojekyll"), "", "utf8");
+console.log("Created dist/.nojekyll to disable Jekyll processing on GitHub Pages");
