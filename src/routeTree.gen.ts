@@ -17,6 +17,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CorporateTrainingRouteImport } from './routes/corporate-training'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SpeakingRouteImport } from './routes/speaking'
+import { Route as BlogSlugRouteImport } from './routes/blog_.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +59,11 @@ const SpeakingRoute = SpeakingRouteImport.update({
   path: '/speaking',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog_/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/corporate-training': typeof CorporateTrainingRoute
   '/resources': typeof ResourcesRoute
   '/speaking': typeof SpeakingRoute
+  '/blog/$slug': typeof BlogSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/corporate-training': typeof CorporateTrainingRoute
   '/resources': typeof ResourcesRoute
   '/speaking': typeof SpeakingRoute
+  '/blog/$slug': typeof BlogSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/corporate-training': typeof CorporateTrainingRoute
   '/resources': typeof ResourcesRoute
   '/speaking': typeof SpeakingRoute
+  '/blog_/$slug': typeof BlogSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/corporate-training'
     | '/resources'
     | '/speaking'
+    | '/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/corporate-training'
     | '/resources'
     | '/speaking'
+    | '/blog/$slug'
   id:
     | '__root__'
     | '/'
@@ -121,6 +132,7 @@ export interface FileRouteTypes {
     | '/corporate-training'
     | '/resources'
     | '/speaking'
+    | '/blog_/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +144,7 @@ export interface RootRouteChildren {
   CorporateTrainingRoute: typeof CorporateTrainingRoute
   ResourcesRoute: typeof ResourcesRoute
   SpeakingRoute: typeof SpeakingRoute
+  BlogSlugRoute: typeof BlogSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpeakingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog_/$slug': {
+      id: '/blog_/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,7 +224,18 @@ const rootRouteChildren: RootRouteChildren = {
   CorporateTrainingRoute: CorporateTrainingRoute,
   ResourcesRoute: ResourcesRoute,
   SpeakingRoute: SpeakingRoute,
+  BlogSlugRoute: BlogSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

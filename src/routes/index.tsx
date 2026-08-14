@@ -483,8 +483,9 @@ function Home() {
           {posts.slice(0, 3).map((p, i) => (
             <Reveal key={p.slug} delay={i * 0.07}>
               <Link
-                to="/blog"
-                className="bg-background border-border lift flex h-full flex-col rounded-3xl border p-8"
+                to="/blog_/$slug"
+                params={{ slug: p.slug }}
+                className="bg-background border-border hover:border-gold/50 lift flex h-full flex-col rounded-3xl border p-8 transition-colors group"
               >
                 <p className="eyebrow">{p.category}</p>
                 <h3 className="mt-4 text-lg leading-snug font-semibold">{p.title}</h3>

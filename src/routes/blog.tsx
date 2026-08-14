@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowUpRight, Clock } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { Newsletter } from "@/components/site/Newsletter";
 import { Reveal } from "@/components/site/Reveal";
@@ -40,23 +41,35 @@ function Blog() {
         <div className="grid gap-6 lg:grid-cols-3">
           {posts.map((p, i) => (
             <Reveal key={p.slug} delay={(i % 3) * 0.07}>
-              <article className="border-border lift flex h-full flex-col rounded-3xl border p-8">
+              <Link
+                to="/blog_/$slug"
+                params={{ slug: p.slug }}
+                className="border-border hover:border-gold/50 lift flex h-full flex-col rounded-3xl border p-8 transition-colors group"
+              >
                 <div className="flex items-center justify-between">
                   <p className="eyebrow">{p.category}</p>
-                  <time className="text-muted-foreground text-xs" dateTime={p.date}>
-                    {new Date(p.date).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </time>
+                  <div className="flex items-center gap-3 text-muted-foreground text-xs">
+                    <span>{p.readTime}</span>
+                    <span>·</span>
+                    <time dateTime={p.date}>
+                      {new Date(p.date).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </time>
+                  </div>
                 </div>
-                <h2 className="mt-4 text-lg leading-snug font-semibold">{p.title}</h2>
+                <h2 className="mt-4 text-lg leading-snug font-semibold group-hover:text-gold transition-colors">
+                  {p.title}
+                </h2>
                 <p className="text-muted-foreground mt-3 flex-1 text-sm leading-relaxed">
                   {p.excerpt}
                 </p>
-                <p className="text-gold mt-6 text-sm font-medium">Full article coming soon</p>
-              </article>
+                <span className="text-gold mt-6 text-sm font-medium inline-flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                  Read full article <ArrowUpRight className="h-4 w-4" />
+                </span>
+              </Link>
             </Reveal>
           ))}
         </div>
